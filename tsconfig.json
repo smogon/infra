@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "incremental": true,
+        "target": "es2018",
+        "lib": ["es2018"],
+        "module": "commonjs",
+        "strict": true,
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "outDir": "./build",
+        "sourceMap": true
+    },
+
+    "include": ["src/**/*.ts"]
+}

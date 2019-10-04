@@ -1,0 +1,21 @@
+{
+    "linterOptions": {
+        "include": ["src/**/*.ts"]
+    },
+    "rules": {
+        "await-promise": true,
+        "no-async-without-await": true,
+        "no-floating-promises": true,
+        "no-for-in-array": true,
+        "no-implicit-dependencies": true,
+        "no-invalid-template-strings": true,
+        "no-promise-as-boolean": true,
+        "strict-boolean-expressions": true,
+        "strict-string-expressions": true,
+        "triple-equals": true,
+        "no-var-keyword": true,
+        "ban-comma-operator": true,
+        "curly": true,
+        "no-switch-case-fall-through": true
+   }
+}
