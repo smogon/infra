@@ -52,19 +52,22 @@ program
     .command('start [args...]')
     .option('-p, --port <port>', 'Port')
     .option('--open-browser', 'Open browser')
+    .option('--skip-build', 'Skip build')
     .option('--refresh', 'Refresh the browser on build')
     .action(async (args, opts) => {
         let config = requireConfig(opts);
 
-        try {
-            let o = await build.build(config);
-            process.stdout.write(o);
-        } catch(e) {
-            process.stdout.write(e.message);
-            process.exit(1);
-        }
+        let {port=0, openBrowser=false, refresh=false, skipBuild=false} = opts;
 
-        let {port=0, openBrowser=false, refresh=false} = opts;
+        if (!skipBuild) {
+            try {
+                let o = await build.build(config);
+                process.stdout.write(o);
+            } catch(e) {
+                process.stdout.write(e.message);
+                process.exit(1);
+            }
+        }
 
         let worker = new Worker(config.entryPoint, args);
         let pauseable = new Pauseable(worker);
