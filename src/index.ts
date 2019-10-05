@@ -69,6 +69,10 @@ program
             }
         }
 
+        if (config.type !== 'js') {
+            throw new Error('config type must be js');
+        }
+
         let worker = new Worker(config.entryPoint, args);
         let pauseable = new Pauseable(worker);
         let server : Server = pauseable;

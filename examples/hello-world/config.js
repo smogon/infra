@@ -4,6 +4,8 @@ let fs = require('fs');
 
 let buildDir = path.join(__dirname, "build");
 
+exports.type = 'js';
+
 exports.buildDir = buildDir;
 
 function sleep(ms) {
