@@ -2,9 +2,11 @@
     "name": "@smogon/infra",
     "license": "MIT",
     "dependencies": {
+        "@types/koa": "^2.0.50",
         "@types/node": "^12.7.11",
         "@types/ws": "^6.0.3",
         "commander": "3.0.1",
+        "koa": "^2.8.2",
         "make-promises-safe": "^5.0.0",
         "opener": "^1.5.1",
         "safe-read-write": "^1.0.5",

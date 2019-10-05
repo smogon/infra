@@ -15,6 +15,7 @@ import Pauseable from './pauseable';
 import Refreshable from "./refreshable";
 import {sub} from './pubsub';
 import listen from './listen';
+import * as http from './http';
 
 function log(s : string) {
     console.log(`[${(new Date).toLocaleTimeString()}] ${s}`);
@@ -75,28 +76,28 @@ program
 
         let worker = new Worker(config.entryPoint, args);
         let pauseable = new Pauseable(worker);
-        let server : Server = pauseable;
+        let refreshable = new Refreshable;
 
-        let refreshable : Refreshable | null = null;
+        // TODO: non-http servers
+        let handlers = [new http.Proxy(pauseable)];
+
         if (refresh) {
-            server = refreshable = new Refreshable(pauseable);;
+            handlers.push(refreshable);
         }
+
+        let server : Server = new http.Server(handlers);
 
         sub(config, (msg : string) => {
             if (msg === 'building' || msg === 'dead') {
                 if (pauseable.running()) {
                     pauseable.pause();
-                    if (refreshable !== null) {
-                        refreshable.refresh();
-                    }
+                    refreshable.refresh();
                 }
             } else if (msg === 'built') {
                 worker.reload();
                 if (pauseable.running()) {
                     // Missed a building notification
-                    if (refreshable !== null) {
-                        refreshable.refresh();
-                    }
+                    refreshable.refresh();
                 } else {
                     pauseable.resume();
                 }

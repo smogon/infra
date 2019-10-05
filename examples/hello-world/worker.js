@@ -6,15 +6,16 @@ let fs = require('fs');
 let n = fs.readFileSync(path.join(__dirname, "build", "info.json"));
 
 let server = http.createServer((req, res) => {
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.end(`
+    let s = `
     <html>
     <head></head>
     <body>
     Hello world. The build info is: <pre>${n}</pre>
     </body>
     </html>
-    `);
+    `;
+    res.writeHead(200, {'Content-Type': 'text/html', 'Content-Length': s.length});
+    res.end(s);
 });
 
 process.on('message', (msg, h) => {
