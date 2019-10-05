@@ -66,7 +66,7 @@ program
 
         let {port=0, openBrowser=false, refresh=false} = opts;
 
-        let worker = new Worker(config, args);
+        let worker = new Worker(config.entryPoint, args);
         let pauseable = new Pauseable(worker);
         let server : Server = pauseable;
 

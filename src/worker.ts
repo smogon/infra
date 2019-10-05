@@ -2,16 +2,15 @@
 import Server from './server';
 import net from 'net';
 import cp from 'child_process';
-import Config from './config';
 
 export default class Worker extends Server {
-    private config : Config;
-    private args : any[];
+    private entryPoint : string;
+    private args : string[];
     private worker : cp.ChildProcess;
 
-    constructor(config : Config, args : any[]) {
+    constructor(entryPoint : string, args : string[]) {
         super();
-        this.config = config;
+        this.entryPoint = entryPoint;
         this.args = args;
         this.worker = this.fork();
     }
@@ -21,7 +20,7 @@ export default class Worker extends Server {
     }
 
     private fork() {
-        let worker = cp.fork(this.config.entryPoint, this.args);
+        let worker = cp.fork(this.entryPoint, this.args);
         worker.on('exit', (code, signal) => {
             throw new Error(`Worker prematurely exited.`);
         });
