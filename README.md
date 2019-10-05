@@ -32,15 +32,8 @@ program
 Configuration format
 ====================
 
-From [src/config.d.ts](src/config.d.ts):
+See [src/config.ts](src/config.ts).
 
-```typescript
-interface Config {
-    buildDir : string,
-    entryPoint : string,
-    build() : Promise<string>
-}
-```
 
 Worker requirements
 ===================
