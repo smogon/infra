@@ -36,7 +36,6 @@ function rewrite(fromRes : http.IncomingMessage, toRes : http.ServerResponse) {
 }
 
 export default class Refreshable extends Server {
-    // public address : any = undefined;
     private port : Promise<number>;
     private wsServer : WebSocket.Server;
     private httpServer : http.Server;

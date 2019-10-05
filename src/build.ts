@@ -10,7 +10,7 @@ export async function build(config : Config) {
 
     await pub(config, 'building');
 
-    let r
+    let r;
     try {
         r = await config.build();
     } catch(e) {
