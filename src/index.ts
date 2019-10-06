@@ -9,12 +9,11 @@ import path from 'path';
 import opener from 'opener';
 import * as build from "./build";
 import Config from './config';
-import Server from './server';
+import Server, {listen} from './server';
 import Worker from "./worker";
 import Pauseable from './pauseable';
 import Refreshable from "./refreshable";
 import {sub} from './pubsub';
-import listen from './listen';
 import * as http from './http';
 
 function log(s : string) {
@@ -79,7 +78,7 @@ program
         let refreshable = new Refreshable;
 
         // TODO: non-http servers
-        let handlers = [new http.Proxy(pauseable)];
+        let handlers : http.Handler[] = [new http.Proxy(pauseable)];
 
         if (refresh) {
             handlers.push(refreshable);

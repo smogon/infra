@@ -4,8 +4,7 @@ import http from 'http';
 import net from 'net';
 import stream from 'stream';
 import WebSocket from 'ws';
-import listen from './listen';
-import _Server from './server';
+import _Server, {listen} from './server';
 
 
 export abstract class Handler {
