@@ -1,7 +1,12 @@
 
-export default interface Config {
+type RunInfo = {
     type : 'js',
-    buildDir : string,
-    entryPoint : string,
-    build() : Promise<string>
+    entryPoint : string
 }
+
+type Config = {
+    buildDir : string,
+    build() : Promise<string>
+} & RunInfo;
+
+export default Config;
