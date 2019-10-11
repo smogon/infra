@@ -3,7 +3,6 @@ import "make-promises-safe";
 import "source-map-support/register";
 
 import program from "commander";
-import fs from 'fs';
 import path from 'path';
 // @ts-ignore
 import opener from 'opener';
