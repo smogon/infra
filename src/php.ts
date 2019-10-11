@@ -25,6 +25,7 @@ export default class PHPHandler extends Handler {
             // Even though we provide the entry point with -f, this is still
             // necessary or you will get "No input file specified"
             SCRIPT_FILENAME: this.entryPoint,
+            REQUEST_URI: ctx.url,
         };
 
         let cb = cgi("php-cgi", {args: ["-f", this.entryPoint, "--", ...this.args], env});
