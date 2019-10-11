@@ -1,8 +1,11 @@
 
 import fs from 'fs';
-import path from 'path';
+import cp from 'child_process';
 import {Config} from './config';
 import {pub} from './pubsub';
+import {promisify} from 'util';
+
+let exec = promisify(cp.exec);
 
 export async function build(config : Config) {
     // Ensure build directory exists.
@@ -10,9 +13,13 @@ export async function build(config : Config) {
 
     await pub(config, 'building');
 
-    let r;
+    let r = "";
     try {
-        r = await config.build();
+        if (config.buildCmd !== null) {
+            let {stdout, stderr} = await exec(config.buildCmd,
+                                              {cwd: config.rootDir});
+            r = stdout + stderr;
+        }
     } catch(e) {
         await pub(config, 'dead');
         throw e;
