@@ -4,7 +4,7 @@ import http from 'http';
 import net from 'net';
 import stream from 'stream';
 import WebSocket from 'ws';
-import _Server, {listen} from './server';
+import Acceptable, { listen } from './acceptable';
 
 
 export abstract class Handler {
@@ -17,7 +17,7 @@ export abstract class Handler {
 export class Proxy extends Handler {
     private port : Promise<number>;
 
-    constructor(server : _Server) {
+    constructor(server : Acceptable) {
         super();
         this.port = listen(0, server);
     }
@@ -55,13 +55,11 @@ export class Proxy extends Handler {
     }
 }
 
-export class Server extends _Server {
+export class Server implements Acceptable {
     private httpServer : http.Server;
     private wsServer : WebSocket.Server;
 
     constructor(handlers : Handler[]) {
-        super();
-
         let app = new Koa;
         for (let handler of handlers) {
             app.use(async (ctx : Koa.Context, next) => {

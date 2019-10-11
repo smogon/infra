@@ -1,13 +1,12 @@
 
-import Server from './server';
+import Acceptable from './acceptable';
 import net from 'net';
 
-export default class Pauseable extends Server {
+export default class Pauseable implements Acceptable {
     private buffer : net.Socket[] | null;
-    private server : Server;
+    private server : Acceptable;
 
-    constructor(server : Server) {
-        super();
+    constructor(server : Acceptable) {
         this.buffer = null;
         this.server = server;
     }

@@ -1,7 +1,7 @@
 
 import net from 'net';
 
-export function listen(port : number, toServer : Server) : Promise<number> {
+export function listen(port : number, toServer : Acceptable) : Promise<number> {
     return new Promise((resolve, reject) => {
         let fromServer = net.createServer({pauseOnConnect: true},
                                           (s) => toServer.accept(s));
@@ -12,6 +12,6 @@ export function listen(port : number, toServer : Server) : Promise<number> {
     });
 }
 
-export default abstract class Server {
-    abstract accept(s : net.Socket): void;
+export default interface Acceptable {
+    accept(s : net.Socket): void;
 }

@@ -9,7 +9,7 @@ import path from 'path';
 import opener from 'opener';
 import * as build from "./build";
 import Config from './config';
-import Server, {listen} from './server';
+import Acceptable, { listen } from './acceptable';
 import Worker from "./worker";
 import Pauseable from './pauseable';
 import Refreshable from "./refreshable";
@@ -84,7 +84,7 @@ program
             handlers.push(refreshable);
         }
 
-        let server : Server = new http.Server(handlers);
+        let server : Acceptable = new http.Server(handlers);
 
         sub(config, (msg : string) => {
             if (msg === 'building' || msg === 'dead') {

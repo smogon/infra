@@ -1,15 +1,14 @@
 
-import Server from './server';
+import Acceptable from './acceptable';
 import net from 'net';
 import cp from 'child_process';
 
-export default class Worker extends Server {
+export default class Worker implements Acceptable {
     private entryPoint : string;
     private args : string[];
     private worker : cp.ChildProcess;
 
     constructor(entryPoint : string, args : string[]) {
-        super();
         this.entryPoint = entryPoint;
         this.args = args;
         this.worker = this.fork();
