@@ -8,7 +8,7 @@ export interface Worker extends Acceptable {
     shutdown() : Promise<void>;
 }
 
-export default class WorkerProcess implements Worker {
+export class Process implements Worker {
     private entryPoint : string;
     private args : string[];
     private state : {
@@ -82,5 +82,32 @@ export default class WorkerProcess implements Worker {
                 resolve();
             });
         });
+    }
+}
+
+export class Multiplexer implements Worker {
+    private i : number;
+    private workers : Worker[];
+
+    constructor(workers : Worker[]) {
+        this.i = 0;
+        this.workers = workers;
+    }
+
+    accept(s : net.Socket) {
+        // Round-robin like Node cluster
+        this.workers[this.i].accept(s);
+        this.i = (this.i + 1) % this.workers.length;
+    }
+
+    reload() {
+        for (let worker of this.workers) {
+            worker.reload();
+        }
+    }
+
+    async shutdown() {
+        await Promise.all(this.workers.map(worker => worker.shutdown()));
+        return;
     }
 }

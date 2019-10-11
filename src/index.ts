@@ -10,7 +10,7 @@ import opener from 'opener';
 import * as build from "./build";
 import Config from './config';
 import Acceptable, { listen } from './acceptable';
-import WorkerProcess from "./worker";
+import {Process} from "./worker";
 import Refreshable from "./refreshable";
 import {sub} from './pubsub';
 import * as http from './http';
@@ -72,7 +72,7 @@ program
             throw new Error('config type must be js');
         }
 
-        let worker = new WorkerProcess(config.entryPoint, args);
+        let worker = new Process(config.entryPoint, args);
         let refreshable = new Refreshable;
 
         // TODO: non-http servers
