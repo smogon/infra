@@ -2,6 +2,9 @@
 type RunInfo = {
     type : 'js',
     entryPoint : string
+} | {
+    type : 'php',
+    entryPoint : string
 }
 
 type Config = {

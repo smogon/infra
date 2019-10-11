@@ -10,9 +10,10 @@ import opener from 'opener';
 import * as build from "./build";
 import Config from './config';
 import Acceptable, { listen } from './acceptable';
-import {Process} from "./worker";
+import {Worker, Process} from "./worker";
 import Refreshable from "./refreshable";
 import {sub} from './pubsub';
+import PHPHandler from './php';
 import * as http from './http';
 
 function log(s : string) {
@@ -68,16 +69,22 @@ program
             }
         }
 
-        if (config.type !== 'js') {
-            throw new Error('config type must be js');
+        let worker : Worker | null;
+        // TODO: non-http servers
+        let handlers : http.Handler[] = [];
+
+        switch (config.type) {
+            case 'js':
+                worker = new Process(config.entryPoint, args);
+                handlers.push(new http.Proxy(worker));
+                break;
+            case 'php':
+                worker = null;
+                handlers.push(new PHPHandler(config.entryPoint, args));
+                break;
         }
 
-        let worker = new Process(config.entryPoint, args);
         let refreshable = new Refreshable;
-
-        // TODO: non-http servers
-        let handlers : http.Handler[] = [new http.Proxy(worker)];
-
         if (refresh) {
             handlers.push(refreshable);
         }
@@ -86,10 +93,14 @@ program
 
         sub(config, (msg : string) => {
             if (msg === 'building' || msg === 'dead') {
-                void worker.shutdown();
+                if (worker !== null) {
+                    void worker.shutdown();
+                }
                 refreshable.refresh();
             } else if (msg === 'built') {
-                worker.reload();
+                if (worker !== null) {
+                    worker.reload();
+                }
                 refreshable.refresh();
             } else {
                 process.stdout.write(`Unexpected message: ${msg}.`);

@@ -5,6 +5,7 @@
         "@types/koa": "^2.0.50",
         "@types/node": "^12.7.11",
         "@types/ws": "^6.0.3",
+        "cgi": "^0.3.1",
         "commander": "3.0.1",
         "koa": "^2.8.2",
         "make-promises-safe": "^5.0.0",
