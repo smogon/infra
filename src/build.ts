@@ -1,7 +1,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import Config from './config';
+import {Config} from './config';
 import {pub} from './pubsub';
 
 export async function build(config : Config) {

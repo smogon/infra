@@ -7,7 +7,7 @@ import path from 'path';
 // @ts-ignore
 import opener from 'opener';
 import * as build from "./build";
-import Config from './config';
+import {load} from './config';
 import Acceptable, { listen } from './acceptable';
 import {Worker, Process} from "./worker";
 import Refreshable from "./refreshable";
@@ -19,15 +19,11 @@ function log(s : string) {
     console.log(`[${(new Date).toLocaleTimeString()}] ${s}`);
 }
 
-function requireConfig(opts : any) : Config {
+function requireConfig(opts : any) {
     let configFile = opts.parent.config;
     try {
         configFile = path.resolve(process.cwd(), configFile);
-        let config = require(configFile);
-        let configRoot = path.dirname(configFile);
-        config.entryPoint = path.resolve(configRoot, config.entryPoint);
-        config.buildDir = path.resolve(configRoot, config.buildDir);
-        return config;
+        return load(configFile);
     } catch(e) {
         console.error("Error loading configuration.\n");
         console.error(e.message);

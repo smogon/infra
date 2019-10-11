@@ -6,7 +6,7 @@ import fs from 'fs';
 import path from 'path';
 // @ts-ignore
 import * as safeFs from 'safe-read-write';
-import Config from './config';
+import {Config} from './config';
 
 function getPath(config : Config) {
     return path.join(config.buildDir, ".smoginfra-pubsub");

@@ -1,4 +1,6 @@
 
+import path from 'path';
+
 type RunInfo = {
     type : 'js',
     entryPoint : string
@@ -7,9 +9,20 @@ type RunInfo = {
     entryPoint : string
 }
 
-type Config = {
+export type Config = {
     buildDir : string,
     build() : Promise<string>
 } & RunInfo;
 
-export default Config;
+export function load(configFile : string) : Config {
+    let config = require(configFile);
+
+    let configRoot = path.dirname(configFile);
+    config.entryPoint = path.resolve(configRoot, config.entryPoint);
+    if (config.buildDir === undefined) {
+        config.buildDir = "build";
+    }
+    config.buildDir = path.resolve(configRoot, config.buildDir);
+
+    return config;
+}
