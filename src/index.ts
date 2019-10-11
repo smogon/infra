@@ -93,6 +93,8 @@ program
             handlers.push(refreshable);
         }
 
+        handlers.push(new http.Sendfile);
+
         let server : Acceptable = new http.Server(handlers);
 
         sub(config, (msg : string) => {

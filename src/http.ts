@@ -5,6 +5,7 @@ import net from 'net';
 import stream from 'stream';
 import WebSocket from 'ws';
 import Acceptable, { listen } from './acceptable';
+import send from 'koa-send';
 
 
 export abstract class Handler {
@@ -47,6 +48,8 @@ export class Proxy extends Handler {
                 // There is a note about it in KoaJS documentation:
                 // https://github.com/koajs/koa/blob/master/docs/api/response.md#stream
                 ctx.body = proxyRes.pipe(new stream.PassThrough);
+                ctx.type = ''; // We don't want application/octet-stream, which
+                               // messes with Sendfile
                 resolve();
             });
 
@@ -54,6 +57,18 @@ export class Proxy extends Handler {
         });
     }
 }
+
+
+export class Sendfile extends Handler {
+    async onRequest(ctx : Koa.Context) {
+        let filename = ctx.response.get("X-Sendfile");
+        if (filename !== '') {
+            ctx.response.remove("X-Sendfile");
+            await send(ctx, filename, {root : "/"});
+        }
+    }
+}
+
 
 export class Server implements Acceptable {
     private httpServer : http.Server;
