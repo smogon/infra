@@ -10,8 +10,7 @@ import opener from 'opener';
 import * as build from "./build";
 import Config from './config';
 import Acceptable, { listen } from './acceptable';
-import Worker from "./worker";
-import Pauseable from './pauseable';
+import WorkerProcess from "./worker";
 import Refreshable from "./refreshable";
 import {sub} from './pubsub';
 import * as http from './http';
@@ -73,12 +72,11 @@ program
             throw new Error('config type must be js');
         }
 
-        let worker = new Worker(config.entryPoint, args);
-        let pauseable = new Pauseable(worker);
+        let worker = new WorkerProcess(config.entryPoint, args);
         let refreshable = new Refreshable;
 
         // TODO: non-http servers
-        let handlers : http.Handler[] = [new http.Proxy(pauseable)];
+        let handlers : http.Handler[] = [new http.Proxy(worker)];
 
         if (refresh) {
             handlers.push(refreshable);
@@ -88,17 +86,16 @@ program
 
         sub(config, (msg : string) => {
             if (msg === 'building' || msg === 'dead') {
-                if (pauseable.running()) {
-                    pauseable.pause();
+                if (worker.running()) {
+                    void worker.shutdown();
                     refreshable.refresh();
                 }
             } else if (msg === 'built') {
+                let running = worker.running();
                 worker.reload();
-                if (pauseable.running()) {
+                if (running) {
                     // Missed a building notification
                     refreshable.refresh();
-                } else {
-                    pauseable.resume();
                 }
             } else {
                 process.stdout.write(`Unexpected message: ${msg}.`);
