@@ -1,0 +1,7 @@
+
+{
+    type: 'js',
+    buildDir: 'build',
+    buildCmd: "node build.js",
+    entryPoint: 'worker.js'
+}

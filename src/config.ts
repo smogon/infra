@@ -1,5 +1,7 @@
 
 import path from 'path';
+import JSON5 from 'json5';
+import fs from 'fs';
 
 type RunInfo = {
     type : 'js',
@@ -16,7 +18,7 @@ export type Config = {
 } & RunInfo;
 
 export function load(configFile : string) : Config {
-    let config = require(configFile);
+    let config = JSON5.parse(fs.readFileSync(configFile, 'utf8'));
 
     config.rootDir = path.dirname(configFile);
 
