@@ -9,7 +9,7 @@ type RunInfo = {
 } | {
     type : 'php',
     entryPoint : string
-}
+};
 
 export type Config = {
     rootDir : string, // Inferred from config.js location

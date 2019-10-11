@@ -31,7 +31,7 @@ export function sub(config : Config, fn : (obj : any) => void) {
     let file = getPath(config);
 
     // Ensure it exists for watcher
-    try { fs.closeSync(fs.openSync(file, 'wx')) } catch(e) {};
+    try { fs.closeSync(fs.openSync(file, 'wx')); } catch(e) {}
 
     let alreadyProcessingChange = false;
 

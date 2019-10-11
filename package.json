@@ -20,7 +20,9 @@
         "ws": "^7.1.2"
     },
     "scripts": {
-        "build": "tsc && tslint --project ."
+        "build": "tsc && tslint --project .",
+        "fullbuild": "tsc && tslint --project . -c tslint-full.json",
+        "fix": "tslint --project . -c tslint-full.json --fix"
     },
     "devDependencies": {
         "tslint": "^5.20.0",

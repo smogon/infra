@@ -28,11 +28,11 @@ function requireConfig(opts : any) {
         console.error("Error loading configuration.\n");
         console.error(e.message);
         process.exit(1);
-        throw new Error // TS doesn't know process.exit ends execution
+        throw new Error; // TS doesn't know process.exit ends execution
     }
 }
 
-program.option('-c, --config <file>', 'Configuration file')
+program.option('-c, --config <file>', 'Configuration file');
 
 program
     .command('build')

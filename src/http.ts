@@ -12,7 +12,7 @@ export abstract class Handler {
     abstract onRequest(ctx : Koa.Context) : Promise<void>;
     onConnect(s : WebSocket) : boolean {
         return false;
-    };
+    }
 }
 
 export class Proxy extends Handler {

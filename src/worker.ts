@@ -22,7 +22,7 @@ export class Process implements Worker {
     constructor(entryPoint : string, args : string[]) {
         this.entryPoint = entryPoint;
         this.args = args;
-        this.state = { mode : 'accepting', worker : this.fork() }
+        this.state = { mode : 'accepting', worker : this.fork() };
     }
 
     accept(s : net.Socket) {

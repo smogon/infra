@@ -15,7 +15,6 @@
         "triple-equals": true,
         "no-var-keyword": true,
         "ban-comma-operator": true,
-        "curly": true,
         "no-switch-case-fall-through": true
    }
 }

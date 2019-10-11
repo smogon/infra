@@ -9,7 +9,7 @@ let exec = promisify(cp.exec);
 
 export async function build(config : Config) {
     // Ensure build directory exists.
-    try { fs.mkdirSync(config.buildDir) } catch(e) {};
+    try { fs.mkdirSync(config.buildDir); } catch(e) {}
 
     await pub(config, 'building');
 
