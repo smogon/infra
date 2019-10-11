@@ -22,4 +22,4 @@ async function build() {
 
 exports.build = build;
 
-exports.entryPoint = path.join(__dirname, "worker.js");
+exports.entryPoint = "worker.js";

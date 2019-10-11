@@ -21,10 +21,13 @@ function log(s : string) {
 }
 
 function requireConfig(opts : any) : Config {
-    let config = opts.parent.config;
+    let configFile = opts.parent.config;
     try {
-        let module = path.resolve(process.cwd(), config);
-        return require(module);
+        configFile = path.resolve(process.cwd(), configFile);
+        let config = require(configFile);
+        let configRoot = path.dirname(configFile);
+        config.entryPoint = path.resolve(configRoot, config.entryPoint);
+        return config;
     } catch(e) {
         console.error("Error loading configuration.\n");
         console.error(e.message);
