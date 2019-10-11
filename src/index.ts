@@ -27,6 +27,7 @@ function requireConfig(opts : any) : Config {
         let config = require(configFile);
         let configRoot = path.dirname(configFile);
         config.entryPoint = path.resolve(configRoot, config.entryPoint);
+        config.buildDir = path.resolve(configRoot, config.buildDir);
         return config;
     } catch(e) {
         console.error("Error loading configuration.\n");
