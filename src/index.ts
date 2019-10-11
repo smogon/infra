@@ -86,17 +86,11 @@ program
 
         sub(config, (msg : string) => {
             if (msg === 'building' || msg === 'dead') {
-                if (worker.running()) {
-                    void worker.shutdown();
-                    refreshable.refresh();
-                }
+                void worker.shutdown();
+                refreshable.refresh();
             } else if (msg === 'built') {
-                let running = worker.running();
                 worker.reload();
-                if (running) {
-                    // Missed a building notification
-                    refreshable.refresh();
-                }
+                refreshable.refresh();
             } else {
                 process.stdout.write(`Unexpected message: ${msg}.`);
                 process.exit(1);

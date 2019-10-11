@@ -5,7 +5,6 @@ import cp from 'child_process';
 
 export interface Worker extends Acceptable {
     reload() : void;
-    running() : boolean;
     shutdown() : Promise<void>;
 }
 
@@ -43,10 +42,6 @@ export default class WorkerProcess implements Worker {
             throw new Error(`Worker prematurely exited.`);
         });
         return worker;
-    }
-
-    running() {
-        return this.state.mode === 'accepting';
     }
 
     reload() {
