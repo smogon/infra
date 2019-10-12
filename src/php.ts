@@ -28,8 +28,10 @@ export default class PHPHandler extends Handler {
             REQUEST_URI: ctx.url,
         };
 
-        let cb = cgi("php-cgi", {args: ["-f", this.entryPoint, "--", ...this.args], env});
-        
+        let cb = cgi("php-cgi", {args: ["-f", this.entryPoint, "--", ...this.args],
+                                 env,
+                                 stderr: process.stderr});
+
         // Hack to make node HTTP callbacks play nicely with koa...
         //
         // This depends on the internals of node-cgi. Header parsing is finished
