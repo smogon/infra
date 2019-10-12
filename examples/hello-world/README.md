@@ -2,13 +2,13 @@
 Start + build the server with:
 
 ```
-smoginfra -c config.js start --open-browser --refresh
+smoginfra -c config.json start --open-browser --refresh
 ```
 
 Run
 
 ```
-smoginfra -c config.js build
+smoginfra -c config.json build
 ```
 
 and watch your browser refresh & show a different random number.

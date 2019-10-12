@@ -26,7 +26,9 @@ program
     .command('start [args...]')
     .option('-p, --port <port>', 'Port')
     .option('--open-browser', 'Open browser')
+    .option('--skip-build', 'Skip build')
     .option('--refresh', 'Refresh the browser on build')
+
 ```
 
 Configuration format
