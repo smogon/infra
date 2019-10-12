@@ -6,6 +6,7 @@ import stream from 'stream';
 import WebSocket from 'ws';
 import Acceptable, { listen } from './acceptable';
 import send from 'koa-send';
+import path from 'path';
 
 
 export abstract class Handler {
@@ -76,6 +77,14 @@ export class Server implements Acceptable {
 
     constructor(handlers : Handler[]) {
         let app = new Koa;
+
+        app.use(async (ctx, next) => {
+            // Normalize paths by locally resolving {.,..} and collapsing
+            // forward slashes
+            ctx.path = path.posix.normalize(ctx.path);
+            await next();
+        });
+
         for (let handler of handlers) {
             app.use(async (ctx : Koa.Context, next) => {
                 await handler.onRequest(ctx);
