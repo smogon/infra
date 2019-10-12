@@ -1,0 +1,6 @@
+#!/usr/bin/env node
+
+// Same as smoginfra, but doesn't run the build system first. This is what
+// `smoginfra` refers to when installed as an npm package
+
+require('../build/index.js');

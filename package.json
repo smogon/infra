@@ -21,6 +21,7 @@
         "ws": "^7.1.2"
     },
     "scripts": {
+        "quickbuild": "tsc",
         "build": "tsc && tslint --project .",
         "fullbuild": "tsc && tslint --project . -c tslint-full.json",
         "fix": "tslint --project . -c tslint-full.json --fix"
@@ -30,5 +31,5 @@
         "typescript": "^3.6.3"
     },
     "files": ["bin/*", "build/**/*.js", "build/**/*.map", "client/*"],
-    "bin": { "smoginfra": "bin/smoginfra" }
+    "bin": { "smoginfra": "bin/smoginfra-prod" }
 }
