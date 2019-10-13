@@ -10,7 +10,7 @@ import {Handler} from './http';
 export default class PHPHandler extends Handler {
     private entryPoint : string;
     private args : string[];
-    
+
     constructor(entryPoint : string, args : string[]) {
         super();
         this.entryPoint = entryPoint;
@@ -44,9 +44,9 @@ export default class PHPHandler extends Handler {
                     setHeader: {
                         value(k : string, v : string) {
                             ctx.set(k, v);
-                        }, 
+                        },
                     },
-                    
+
                     statusCode: {
                         set(v : number) {
                             ctx.status = v;
