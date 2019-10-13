@@ -37,9 +37,9 @@ export default class PHPHandler extends Handler {
         // This depends on the internals of node-cgi. Header parsing is finished
         // when statusCode is set.
         return new Promise<void>(resolve => {
-            ctx.body = new stream.PassThrough;
+            // (1)
             let res = Object.create(
-                ctx.body,
+                new stream.PassThrough,
                 {
                     setHeader: {
                         value(k : string, v : string) {
@@ -50,6 +50,18 @@ export default class PHPHandler extends Handler {
                     statusCode: {
                         set(v : number) {
                             ctx.status = v;
+                            // Make sure to set `ctx.body` here and not at (1).
+                            //
+                            // Note that Koa will invoke `ctx.body.destroy()`
+                            // when the response finishes. This can happen
+                            // before resolve() is called if the request is
+                            // cancelled. If a pipe happens in a tick after this
+                            // destroy(), we will get ERR_STREAM_DESTROYED
+                            // errors.
+                            //
+                            // cb will set up a pipe only after `statusCode` is
+                            // set. So set `ctx.body` here.
+                            ctx.body = res;
                             resolve();
                         }
                     }
