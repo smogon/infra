@@ -45,12 +45,17 @@ export class Proxy extends Handler {
                 for (let [h, v] of Object.entries(proxyRes.headers)) {
                     ctx.set(h, v as string);
                 }
+
+                let type = ctx.type;
+
                 // setting proxyRes directly here seems to sometimes result in EPIPE.
                 // There is a note about it in KoaJS documentation:
                 // https://github.com/koajs/koa/blob/master/docs/api/response.md#stream
                 ctx.body = proxyRes.pipe(new stream.PassThrough);
-                ctx.type = ''; // We don't want application/octet-stream, which
-                               // messes with Sendfile
+
+                // If !type before setting body, it was changed to application/octet-stream...
+                ctx.type = type;
+
                 resolve();
             });
 
