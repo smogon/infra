@@ -65,6 +65,34 @@ export class Proxy extends Handler {
 }
 
 
+export class Assets extends Handler {
+    constructor(opts: {dir: string,
+                       mountPoint: string},
+                _next : Handler,
+                private next = _next,
+                private dir = opts.dir,
+                private mountPoint = opts.mountPoint) {
+        super();
+    }
+
+    async onRequest(ctx : Koa.Context) {
+        if (ctx.path.startsWith(this.mountPoint)) {
+            let rest = ctx.path.slice(this.mountPoint.length);
+            let filename = path.posix.join(this.dir, rest);
+            // For more info, see https://www.keycdn.com/blog/cache-control-immutable
+            ctx.set('Cache-Control', 'public, max-age=31536000, immutable');
+            await send(ctx, filename, { root : "/" });
+        } else {
+            return this.next.onRequest(ctx);
+        }
+    }
+
+    onConnect(s : WebSocket) {
+        return this.next.onConnect(s);
+    }
+}
+
+
 export class Sendfile extends Handler {
     async onRequest(ctx : Koa.Context) {
         let filename = ctx.response.get("X-Sendfile");

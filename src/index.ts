@@ -83,6 +83,12 @@ program
                 break;
         }
 
+        if (config.assets !== null) {
+            // Hack, wait until we make the HTTP pipeline optional before
+            // refactoring
+            handlers = [ new http.Assets(config.assets, handlers[0]) ];
+        }
+
         let refreshable = new Refreshable;
         if (refresh) {
             handlers.push(refreshable);

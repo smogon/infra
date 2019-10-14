@@ -15,6 +15,10 @@ export type Config = {
     rootDir : string, // Inferred from config.js location
     buildDir : string,
     buildCmd : string | null,
+    assets : {
+        dir : string,
+        mountPoint : string
+    } | null
 } & RunInfo;
 
 export function load(configFile : string) : Config {
@@ -31,6 +35,13 @@ export function load(configFile : string) : Config {
 
     if (config.buildCmd === undefined) {
         config.buildCmd = null;
+    }
+
+    if (config.assets === undefined) {
+        config.assets = null;
+    } else {
+        config.assets.dir = path.resolve(config.rootDir, config.assets.dir);
+        config.assets.mountPoint = path.posix.join("/", config.assets.mountPoint, "/");
     }
 
     return config;

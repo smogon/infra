@@ -1,0 +1,11 @@
+
+{
+    type: 'js',
+    entryPoint: 'worker.js',
+    buildDir: 'build',
+    buildCmd: './build.js',
+    assets : {
+        dir: 'build/assets',
+        mountPoint: 'assets'
+    }
+}
