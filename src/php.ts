@@ -62,6 +62,11 @@ export default class PHPHandler extends Handler {
                             // cb will set up a pipe only after `statusCode` is
                             // set. So set `ctx.body` here.
                             ctx.body = res;
+                            ctx.type = ''; // We don't want application/octet-stream, which
+                                           // messes with Sendfile
+                            // ^-- See also comment in http.ts... we should
+                            // factor this out somehow, or just switch to
+                            // something else than koa
                             resolve();
                         }
                     }
