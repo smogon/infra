@@ -59,6 +59,14 @@ export class Proxy extends Handler {
                 resolve();
             });
 
+            // If the connection hangs before upstream responds, and upstream is
+            // killed (perhaps by a build), then we will get a socket hangup
+            // exception thrown which will take down infra. Catch it here and
+            // reject the promise.
+            proxyReq.on('error', (err) => {
+                reject(err);
+            });
+
             ctx.req.pipe(proxyReq);
         });
     }
